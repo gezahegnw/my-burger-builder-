@@ -8,33 +8,117 @@ import UserInput from '../../../components/UI/UserInput/UserInputCom';
 
 class ContactData extends Component {
     state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+       userInputForm: {
+                name: {
+                    formInputType: 'input',
+                    formInputConfig: {
+                        type: 'text',
+                        placeholder: 'Enter Your Name'
+                    },
+                    value: '',
+                    validation: {
+                        required: true,
+                        minLength: 2,
+                        maxLength: 20
+                    },
+                    valid: false,
+                    touched: false
+                },
+                street: {formInputType: 'input',
+                        formInputConfig: {
+                            type: 'text',
+                            placeholder: 'Enter street Name'
+                    },
+                    value: '',
+                    validation: {
+                        required: true,
+                        minLength: 2,
+                        maxLength: 20
+                    },
+                    valid: false,
+                    touched: false
+                },
+                state: {
+                    formInputType: 'input',
+                    formInputConfig: {
+                        type: 'text',
+                        placeholder: 'Enter state Name'
+                    },
+                    value: '',
+                    validation: {
+                        required: true,
+                        minLength: 2,
+                        maxLength: 20
+                    },
+                    valid: false,
+                    touched: false
+                },
+                zipCode: {
+                        formInputType: 'input',
+                        formInputConfig: {
+                            type: 'number',
+                            placeholder: 'Enter ZIP code'
+                    },
+                    value: '',
+                    validation: {
+                        required: true,
+                        minLength: 5,
+                        maxLength: 9
+                    },
+                    valid: false,
+                    touched: false
+                },
+                email: {
+                        formInputType: 'input',
+                        formInputConfig: {
+                            type: 'email',
+                            placeholder: 'Enter Your E-mail'
+                    },
+                    value: '',
+                    validation: {
+                        required: true,
+                        minLength: 2,
+                        maxLength: 25
+                    },
+                    valid: false,
+                    touched: false
+                },
+                deliveryMethod: {
+                        formInputType: 'select',
+                        formInputConfig: {
+                            options: [
+                                {value: 'fastest', displayValue: 'Fastest'},
+                                {value: 'cheapest', displayValue: 'Cheapest'}
+                        ]
+                    },
+                    value: '',
+                    valid: true,
+                    validation: {
+                        // required: true
+                    }
+                    
+                }
         },
+        isUserInputValid: false,
         loading: false
     }
 
     orderHandler = ( event ) => {
         event.preventDefault();
         this.setState( { loading: true } );
-        const order = {
+        const userFormInputData = {};
+        //formElementId is the properties like name, street, zip code, state... past from userInputForm element
+            for (let formElementId in this.state.userInputForm) {
+                //.value is that we get it from user when the input it in form 
+                userFormInputData[formElementId] = this.state.userInputForm[formElementId].value;
+
+            }
+        const yourOrder = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            customer: {
-                name: 'Max Schwarzmüller',
-                address: {
-                    street: 'Teststreet 1',
-                    zipCode: '41351',
-                    country: 'Germany'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
+            orderData: userFormInputData
         }
-        axios.post( '/orders.json', order )
+        axios.post( '/orders.json', yourOrder )
             .then( response => {
                 this.setState( { loading: false } );
                 this.props.history.push('/');
@@ -43,15 +127,65 @@ class ContactData extends Component {
                 this.setState( { loading: false } );
             } );
     }
+    checkIfItsValid(value, rules)  {
+        let isValid = true;
+        if (rules.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
+        if (rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid ;
+        }
+        if (rules.maxLength) {
+            isValid = value.length <= rules.maxLength &&  isValid;
+        }
+        return isValid;
+    }
+    //event handler method that handle user input changes
+    userInputChangeHandler = (event, inputId) => {
+        console.log(event.target.value);
+        const updateUserInputForm = {
+            ...this.state.userInputForm
+        };
+        const updateUserInputFormElement = {
+            ...updateUserInputForm[inputId]
+        };
+        updateUserInputFormElement.value = event.target.value;
+        updateUserInputFormElement.valid = this.checkIfItsValid(updateUserInputFormElement.value, updateUserInputFormElement.validation);
+        updateUserInputFormElement.touched = true;
+        updateUserInputForm[inputId] = updateUserInputFormElement;
+        console.log(updateUserInputFormElement);
 
+        //check if user enter valid values 
+        let isFormInputValid = true;
+        for (let inputId in updateUserInputForm) {
+            isFormInputValid = updateUserInputForm[inputId].valid && isFormInputValid;
+        }
+        this.setState({userInputForm: updateUserInputForm, isUserInputValid: isFormInputValid});
+    }
     render () {
+        //loop through the useInputForm properities and its value
+        const userInputFormElementArray = [];
+        for (let key in this.state.userInputForm) {
+            userInputFormElementArray.push({
+                id: key,
+                config: this.state.userInputForm[key]
+            });
+        }
         let form = (
-            <form>
-                <UserInput inputtype='input' type="email" name="email" placeholder="Your Mail" />
-                <UserInput inputtype='input' type="text" name="street" placeholder="Street" />
-                <UserInput inputtype='input' type="text" name="postal" placeholder="Postal Code" />
-                <UserInput inputtype='input' type="text" name="name" placeholder="Your Name" />
-                <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+            <form onSubmit={this.orderHandler}>
+               { userInputFormElementArray.map(userInputForm => (
+                   <UserInput 
+                   key={userInputForm.id}
+                   formInputType={userInputForm.config.formInputType}
+                   formInputConfig={userInputForm.config.formInputConfig}
+                   value={userInputForm.config.value}
+                   invalid={!userInputForm.config.valid}
+                   shouldValidate={userInputForm.config.validation}
+                   touched={userInputForm.config.touched}
+                   changeInput={(event) => this.userInputChangeHandler (event, userInputForm.id) } />
+
+               ))}
+                <Button btnType="Success" disabled={!this.state.isUserInputValid}>ORDER</Button>
             </form>
         );
         if ( this.state.loading ) {
