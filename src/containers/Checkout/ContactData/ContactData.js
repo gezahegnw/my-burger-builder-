@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -114,8 +115,8 @@ class ContactData extends Component {
 
             }
         const yourOrder = {
-            ingredients: this.props.ingredients,
-            price: this.props.price,
+            ingredients: this.props.ingrdnts,
+            price: this.props.myPrice,
             orderData: userFormInputData
         }
         axios.post( '/orders.json', yourOrder )
@@ -199,5 +200,12 @@ class ContactData extends Component {
         );
     }
 }
+//creating redux state and then use in our app
+const mapStateToProps = state => {
+    return {
+        ingrdnts: state.ingredients,
+        myPrice: state.totalPrice
+    }
+}
 
-export default ContactData;
+export default connect(mapStateToProps) (ContactData);
