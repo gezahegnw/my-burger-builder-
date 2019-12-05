@@ -1,5 +1,6 @@
 
 export {
     addIngredients,
-    removeIngredients
+    removeIngredients,
+    initialIngredients
 } from './burgerAction';

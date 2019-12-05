@@ -28,12 +28,15 @@ class BurgerBuilder extends Component {
        // totalPrice: 4,
        // purchasable: false,
         purchasing: false,
-        loading: false,
-        error: false
+        // loading: false,
+        // error: false
     }
 
+    //use the fellowing code only if you are not using REDUX since we are using redux, we do not need to use this code here
+    //instead we set up this code in burgerAction.js file by using redux-thunk
     componentDidMount () {
         console.log(this.props);
+        this.props.onInitialIngredients();
         // axios.get( 'https://my-react-burger-app-56803.firebaseio.com/ingredients.json' )
         
         //     .then( response => {
@@ -55,36 +58,7 @@ class BurgerBuilder extends Component {
         return sum > 0 ;
     }
 
-    // addIngredientHandler = ( type ) => {
-    //     const oldCount = this.state.ingredients[type];
-    //     const updatedCount = oldCount + 1;
-    //     const updatedIngredients = {
-    //         ...this.state.ingredients
-    //     };
-    //     updatedIngredients[type] = updatedCount;
-    //     const priceAddition = INGREDIENT_PRICES[type];
-    //     const oldPrice = this.state.totalPrice;
-    //     const newPrice = oldPrice + priceAddition;
-    //     this.setState( { totalPrice: newPrice, ingredients: updatedIngredients } );
-    //     this.updatePurchaseState( updatedIngredients );
-    // }
-
-    // removeIngredientHandler = ( type ) => {
-    //     const oldCount = this.state.ingredients[type];
-    //     if ( oldCount <= 0 ) {
-    //         return;
-    //     }
-    //     const updatedCount = oldCount - 1;
-    //     const updatedIngredients = {
-    //         ...this.state.ingredients
-    //     };
-    //     updatedIngredients[type] = updatedCount;
-    //     const priceDeduction = INGREDIENT_PRICES[type];
-    //     const oldPrice = this.state.totalPrice;
-    //     const newPrice = oldPrice - priceDeduction;
-    //     this.setState( { totalPrice: newPrice, ingredients: updatedIngredients } );
-    //     this.updatePurchaseState( updatedIngredients );
-    // }
+   
 
     purchaseHandler = () => {
         this.setState( { purchasing: true } );
@@ -106,7 +80,7 @@ class BurgerBuilder extends Component {
             disabledInfo[key] = disabledInfo[key] <= 0
         }
         let orderSummary = null;
-        let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
+        let burger = this.props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
 
         if ( this.props.mapIng ) {
             burger = (
@@ -127,9 +101,9 @@ class BurgerBuilder extends Component {
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />;
         }
-        if ( this.state.loading ) {
-            orderSummary = <Spinner />;
-        }
+        // if ( this.state.loading ) {
+        //     orderSummary = <Spinner />;
+        // }
         // {salad: true, meat: false, ...}
         return (
             <Auxiliary>
@@ -145,13 +119,15 @@ class BurgerBuilder extends Component {
 const mapStateToProps = state => {
     return {
         mapIng: state.ingredients,
-        addPrice: state.totalPrice
+        addPrice: state.totalPrice,
+        error: state.error
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         addTheIngredients: (nameOfIngredient) => dispatch(theBurgerBuilderActions.addIngredients (nameOfIngredient)),
-        removeTheIngredients: (nameOfIngredient) => dispatch(theBurgerBuilderActions.removeIngredients(nameOfIngredient))
+        removeTheIngredients: (nameOfIngredient) => dispatch(theBurgerBuilderActions.removeIngredients(nameOfIngredient)),
+        onInitialIngredients: () => dispatch(theBurgerBuilderActions.initialIngredients())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps) (withErrorHandler( BurgerBuilder, axios ));
