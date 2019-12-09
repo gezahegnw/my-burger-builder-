@@ -30,6 +30,7 @@ export const ifThereNoIngredients = () => {
 //this is redux-thunk function that used for asyncrounse action 
 export const initialIngredients = () => {
     return dispatch => {
+        //my app firebase database link
             axios.get( 'https://my-react-burger-app-56803.firebaseio.com/ingredients.json' )
             .then( response => {
                 dispatch(setTheIngredients(response.data));

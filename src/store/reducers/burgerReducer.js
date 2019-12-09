@@ -1,14 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-        // ingredients: {
-        //     salad: 0,
-        //     cheese: 0,
-        //     meat: 0,
-        //     bacon: 0
-        // },
         ingredients: null,
-        totalPrice: 4,
+        totalPrice: 2,
         error: false
 };
 const INGREDIENT_PRICES = {
@@ -44,6 +38,8 @@ const reducer = (state = initialState, action) => {
                 return {
                     ...state,
                     ingredients: action.myIngredients,
+                    //this totalPrice 2 will reset the total price after you submitted your order
+                    totalPrice: 2,
                     error: false
 
                 };
@@ -54,7 +50,7 @@ const reducer = (state = initialState, action) => {
                 };
         default:
             return state;
-    };
+        }
 };
 
 export default reducer;
