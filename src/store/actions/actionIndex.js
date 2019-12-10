@@ -9,3 +9,10 @@ export {
     orderSummaryPage,
     fetchTheOrders
     } from './orderActions';
+
+export {
+    userAuthentication
+} from './userAuth';
+// export {
+//     auth
+// } from './userAuth';

@@ -46,7 +46,7 @@ const orderReducer = (state = initialState, action) => {
                 yourOrder: action.newOrders,
                 loading: false
             };
-    case actionTypes. INITIAL_ORDER_FITCH_FAIL:
+    case actionTypes.INITIAL_ORDER_FITCH_FAIL:
             return {
                 ...state,
                 loading: false

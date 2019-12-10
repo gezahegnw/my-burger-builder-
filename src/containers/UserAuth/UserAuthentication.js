@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import UserInput from '../../components/UI/UserInput/UserInputCom';
 import Button from '../../components/UI/Button/Button';
 import classes from './UserAuthentication.css';
+import * as actions from '../../store/actions/actionIndex';
+
 
 class UserAuthentication extends Component {
     state = {
@@ -34,24 +37,11 @@ class UserAuthentication extends Component {
                 },
                 valid: false,
                 touched: false
-            },
-        }
+            }
+        },
+        isSignup: true
     }
-    inputChangeHandler = ( event, controlName ) => {
-        event.preventDefault();
-        const userFormInputData = {
-                ...this.state.formControls,
-                [controlName]: {
-                    ...this.state.formControls[controlName],
-                    value: event.target.value,
-                    valid: this.checkIfItsValid(event.target.value,
-                    this.state.formControls[controlName]. validation),
-                    touched: true
-                }
-        };
-        this.setState({formControls: userFormInputData});
-        
-    }
+
     checkIfItsValid(value, rules)  {
         let isValid = true;
         if (!rules) {
@@ -81,27 +71,32 @@ class UserAuthentication extends Component {
         }
         return isValid;
     }
-    //event handler method that handle user input changes
-    userInputChangeHandler = (event, inputId) => {
-        //console.log(event.target.value);
-        const updateUserInputForm = {
-            ...this.state.formControls
+    userInputChangeHandler= ( event, controlName ) => {
+        const userFormInputData = {
+                ...this.state.formControls,
+                [controlName]: {
+                    ...this.state.formControls[controlName],
+                    value: event.target.value,
+                    valid: this.checkIfItsValid(event.target.value,
+                    this.state.formControls[controlName].validation),
+                    touched: true
+                }
         };
-        const updateUserInputFormElement = {
-            ...updateUserInputForm[inputId]
-        };
-        updateUserInputFormElement.value = event.target.value;
-        updateUserInputFormElement.valid = this.checkIfItsValid(updateUserInputFormElement.value, updateUserInputFormElement.validation);
-        updateUserInputFormElement.touched = true;
-        updateUserInputForm[inputId] = updateUserInputFormElement;
-       // console.log(updateUserInputFormElement);
-
-        //check if user enter valid values 
-        let isFormInputValid = true;
-        for (let inputId in updateUserInputForm) {
-            isFormInputValid = updateUserInputForm[inputId].valid && isFormInputValid;
-        }
-        this.setState({formControls: updateUserInputForm, isUserInputValid: isFormInputValid});
+        this.setState({formControls: userFormInputData});
+    }
+    submitHandler = (e) => {
+        e.preventDefault();
+        this.props.onUserAuth(
+            this.state.formControls.email.value,
+            this.state.formControls.password.value,
+            this.state.isSignup
+        );
+    }
+    //to switch if user signIn or signup
+    switchUserAuthHandler = () => {
+        this.setState(prevState => {
+            return {isSignup: !prevState.isSignup};
+        });
     }
     render () {
              //loop through the useInputForm properities and its value
@@ -112,9 +107,7 @@ class UserAuthentication extends Component {
                      config: this.state.formControls[key]
                  });
              }
-             let form = (
-                 <form onSubmit={this.inputChangeHandler}>
-                    { userInputFormElementArray.map(formControls => (
+             let form = userInputFormElementArray.map(formControls => (
                         <UserInput 
                         key={formControls.id}
                         formInputType={formControls.config.formInputType}
@@ -125,17 +118,27 @@ class UserAuthentication extends Component {
                         touched={formControls.config.touched}
                         changeInput={(event) => this.userInputChangeHandler (event, formControls.id) } />
      
-                    ))}
-                     <Button btnType="Success" disabled={!this.state.isUserInputValid}>Submit</Button>
-                 </form>
-             );
+                    ));
         return (
             <div className={classes.UserAuthentication}>
+                <form onSubmit={this.submitHandler}>
                  <h4>Login or SignUp</h4>
                 {form}
+                <Button btnType="Success" >Submit</Button>
+                 </form>
+                 If you are already signup, please signIn by using your logIn credentials! <br />
+                 <Button 
+                     clicked={this.switchUserAuthHandler}
+                     btnType='Danger'>Switch to {this.state.isSignup ? 'SIGN IN' : 'SIGN UP'} </Button>
             </div>
         );
     }
 }
 
-export default UserAuthentication;
+const mapDispatchToProps = dispatch => {
+    return {
+        onUserAuth: (email, password, isSignup) => dispatch(actions.userAuthentication(email, password, isSignup))
+    };
+};
+
+export default connect(null, mapDispatchToProps) (UserAuthentication);
