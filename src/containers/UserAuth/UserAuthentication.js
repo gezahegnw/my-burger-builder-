@@ -2,11 +2,25 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import UserInput from '../../components/UI/UserInput/UserInputCom';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import Button from '../../components/UI/Button/Button';
 import classes from './UserAuthentication.css';
 import * as actions from '../../store/actions/actionIndex';
 
-
+const signIn ={
+    background: "red",
+    borderRadius: 8,
+    color: 'white',
+    height: 40,
+    width: 100
+  };
+  const signUp ={
+    background: "green",
+    borderRadius: 8,
+    color: 'white',
+    height: 40,
+    width: 100
+  };
 class UserAuthentication extends Component {
     state = {
         formControls: {
@@ -98,6 +112,8 @@ class UserAuthentication extends Component {
             return {isSignup: !prevState.isSignup};
         });
     }
+   
+      
     render () {
              //loop through the useInputForm properities and its value
              const userInputFormElementArray = [];
@@ -119,21 +135,44 @@ class UserAuthentication extends Component {
                         changeInput={(event) => this.userInputChangeHandler (event, formControls.id) } />
      
                     ));
+            //this for spinner 
+            if (this.props.loading) {
+                form = <Spinner />
+            }
+            //this will show error message from firebase API 
+            let showLogInErrorMessage = null;
+            if (this.props.error) {
+                showLogInErrorMessage = (
+                <p style={{color: 'red', fontSize: 20}}>{this.props.error.message}</p>
+                );
+
+            }
+
         return (
             <div className={classes.UserAuthentication}>
+                {showLogInErrorMessage}
                 <form onSubmit={this.submitHandler}>
                  <h4>Login or SignUp</h4>
                 {form}
                 <Button btnType="Success" >Submit</Button>
                  </form>
-                 If you are already signup, please signIn by using your logIn credentials! <br />
+                 If you are already signup, please sign In by using your log In credentials! <br />
                  <Button 
                      clicked={this.switchUserAuthHandler}
-                     btnType='Danger'>Switch to {this.state.isSignup ? 'SIGN IN' : 'SIGN UP'} </Button>
+                     btnType='Danger'>Switch to 
+                     {this.state.isSignup ? <button style={signIn}> SIGN IN</button> : <button style={signUp}> SIGN UP</button>}
+                 </Button>
             </div>
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        loading: state.authReducer.loading,
+        error: state.authReducer.error
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -141,4 +180,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(null, mapDispatchToProps) (UserAuthentication);
+export default connect(mapStateToProps, mapDispatchToProps) (UserAuthentication);

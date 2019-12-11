@@ -31,9 +31,10 @@ export const userAuthentication = (email, password, isSignup) => {
             password: password,
             returnSecureToken: true
         };
-        
+        //use the fellowing link for sign up API call
         let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDbA0wIFVHHvHQxsKHbC9wLWKHn6u8gNbA";
             if (!isSignup) {
+                 //use the fellowing link for sign in API call
                 url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDbA0wIFVHHvHQxsKHbC9wLWKHn6u8gNbA';
             }
         axios.post(url, authData)
@@ -43,7 +44,7 @@ export const userAuthentication = (email, password, isSignup) => {
             })
             .catch(err => {
                 console.log(err);
-                dispatch(userAuthFail(err));
+                dispatch(userAuthFail(err.response.data.error));
             });
     };
 };

@@ -1,3 +1,10 @@
+
+## dependices 
+# react-router-dom
+# redux
+# react-redux
+# redux-thunk'
+# axios
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
