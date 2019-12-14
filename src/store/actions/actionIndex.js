@@ -11,7 +11,8 @@ export {
     } from './orderActions';
 
 export {
-    userAuthentication
+    userAuthentication,
+    logout
 } from './userAuth';
 // export {
 //     auth

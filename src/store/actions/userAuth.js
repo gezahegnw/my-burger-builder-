@@ -22,7 +22,20 @@ export const userAuthFail = (error) => {
         error: error
     };
 };
-
+//function that logout the user after  1 hour
+export const logout = () => {
+    return {
+        type: actionTypes.USER_AUTH_LOGOUT 
+    };
+};
+//function for check firebase authetcation token exiperation time 
+export const checkUserAuthTimeout = (tokenExpirationTime) => {
+    return dispatch => {
+        setTimeout(() =>{
+            dispatch(logout());
+        }, tokenExpirationTime * 1000);//this will make the token expired after one
+    };
+};
 export const userAuthentication = (email, password, isSignup) => {
     return dispatch => {
         dispatch(userAuthStart());
@@ -41,6 +54,7 @@ export const userAuthentication = (email, password, isSignup) => {
             .then(response => {
                 console.log(response);
                 dispatch(userAuthSuccessful(response.data.idToken, response.data.localId));
+                dispatch(checkUserAuthTimeout(response.data.expiresIn));//expiresIn come from firebase Auth data
             })
             .catch(err => {
                 console.log(err);

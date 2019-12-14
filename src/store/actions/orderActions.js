@@ -29,10 +29,10 @@ export const orderSummaryPage = () => {
     };
 };
 //asyncrounse data that we get it from firebase database from our burger builder app
-export const startTheOrder = (orderData) => {
+export const startTheOrder = (orderData, token) => {
     return dispatch => {
         dispatch(startOrdering());
-        axios.post( '/orders.json', orderData )
+        axios.post( '/orders.json?auth=' + token, orderData )
             .then( response => {
                 dispatch(orderSuccessful(response.data.name, orderData));
             } )
@@ -61,9 +61,9 @@ export const initialOrderFitchStart = () => {
     };
 };
 //fitching data to firebase
-export const fetchTheOrders = () => {
+export const fetchTheOrders = (token) => {
     return dispatch => {
-        axios.get('/orders.json')
+        axios.get('/orders.json?auth=' + token)
         .then(res => {
             const fetchedOrders = [];
             for (let key in res.data) {

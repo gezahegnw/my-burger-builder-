@@ -120,7 +120,7 @@ class ContactData extends Component {
             price: this.props.myPrice,
             orderData: userFormInputData
         }
-        this.props.onSubmitOrder(yourOrder);
+        this.props.onSubmitOrder(yourOrder, this.props.myToken);
         // axios.post( '/orders.json', yourOrder )
         //     .then( response => {
         //         this.setState( { loading: false } );
@@ -223,14 +223,15 @@ const mapStateToProps = state => {
     return {
         ingrdnts: state.burgerBuilder.ingredients,
         myPrice: state.burgerBuilder.totalPrice,
-        isLoading: state.yourOrder.loading
+        isLoading: state.yourOrder.loading,
+        myToken:  state.authReducer.token
     };
 };
 
 //dispatchable action
 const mapDispatchToProps = dispatch => {
     return {
-        onSubmitOrder: (orderData) => dispatch(actions.startTheOrder(orderData) )
+        onSubmitOrder: (orderData, token) => dispatch(actions.startTheOrder(orderData, token) )
     };
 };
 

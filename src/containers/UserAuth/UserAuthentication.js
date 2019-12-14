@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import UserInput from '../../components/UI/UserInput/UserInputCom';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -7,20 +8,20 @@ import Button from '../../components/UI/Button/Button';
 import classes from './UserAuthentication.css';
 import * as actions from '../../store/actions/actionIndex';
 
-const signIn ={
-    background: "red",
-    borderRadius: 8,
-    color: 'white',
-    height: 40,
-    width: 100
-  };
-  const signUp ={
-    background: "green",
-    borderRadius: 8,
-    color: 'white',
-    height: 40,
-    width: 100
-  };
+// const signIn ={
+//     background: "red",
+//     borderRadius: 8,
+//     color: 'white',
+//     height: 40,
+//     width: 100
+//   };
+//   const signUp ={
+//     background: "green",
+//     borderRadius: 8,
+//     color: 'white',
+//     height: 40,
+//     width: 100
+//   };
 class UserAuthentication extends Component {
     state = {
         formControls: {
@@ -148,11 +149,17 @@ class UserAuthentication extends Component {
 
             }
 
+            //this redirect to main page after the user login
+            let redirectToMainPageAfterLogin = null;
+            if (this.props.isAuthenticated) {
+                redirectToMainPageAfterLogin = <Redirect to="/" />
+            }
         return (
             <div className={classes.UserAuthentication}>
+                {redirectToMainPageAfterLogin}
                 {showLogInErrorMessage}
                 <form onSubmit={this.submitHandler}>
-                 <h4>Login or SignUp</h4>
+                 <h4>SignIn or SignUp</h4>
                 {form}
                 <Button btnType="Success" >Submit</Button>
                  </form>
@@ -160,7 +167,7 @@ class UserAuthentication extends Component {
                  <Button 
                      clicked={this.switchUserAuthHandler}
                      btnType='Danger'>Switch to 
-                     {this.state.isSignup ? <button style={signIn}> SIGN IN</button> : <button style={signUp}> SIGN UP</button>}
+                     {this.state.isSignup ?  "SIGN IN" :  "SIGN UP"}
                  </Button>
             </div>
         );
@@ -170,7 +177,8 @@ class UserAuthentication extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.authReducer.loading,
-        error: state.authReducer.error
+        error: state.authReducer.error,
+        isAuthenticated: state.authReducer.token !== null
     };
 };
 
