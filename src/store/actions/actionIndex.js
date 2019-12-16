@@ -12,7 +12,9 @@ export {
 
 export {
     userAuthentication,
-    logout
+    logout,
+    setAuthenticatedUserRedirectPath,
+    authCheckUserState
 } from './userAuth';
 // export {
 //     auth

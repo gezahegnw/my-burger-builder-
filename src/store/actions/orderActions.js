@@ -61,9 +61,11 @@ export const initialOrderFitchStart = () => {
     };
 };
 //fitching data to firebase
-export const fetchTheOrders = (token) => {
+export const fetchTheOrders = (token, userId) => {
     return dispatch => {
-        axios.get('/orders.json?auth=' + token)
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+
+        axios.get('/orders.json' + queryParams)
         .then(res => {
             const fetchedOrders = [];
             for (let key in res.data) {

@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
         ingredients: null,
         totalPrice: 2,
-        error: false
+        error: false,
+        makingBurger: false
 };
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -21,7 +22,8 @@ const reducer = (state = initialState, action) => {
                     ...state.ingredients,
                     [action.ingredientName]: state.ingredients[action.ingredientName] + 1
                 },
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+                makingBurger: true
 
             };
         case actionTypes.REMOVE_INGREDIENT:
@@ -31,7 +33,8 @@ const reducer = (state = initialState, action) => {
                         ...state.ingredients,
                         [action.ingredientName]: state.ingredients[action.ingredientName] - 1
                     },
-                    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+                    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+                    makingBurger: true
 
                 };
         case actionTypes.SET_INGREDIENT: 
@@ -40,8 +43,8 @@ const reducer = (state = initialState, action) => {
                     ingredients: action.myIngredients,
                     //this totalPrice 2 will reset the total price after you submitted your order
                     totalPrice: 2,
-                    error: false
-
+                    error: false,
+                    makingBurger: false
                 };
         case actionTypes.IF_THERE_NO_INGREDIENTS: 
                 return {

@@ -9,7 +9,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
-import * as theBurgerBuilderActions from '../../store/actions/actionIndex';
+import * as actions from '../../store/actions/actionIndex';
 
 // const INGREDIENT_PRICES = {
 //     salad: 0.5,
@@ -61,7 +61,15 @@ class BurgerBuilder extends Component {
    
 
     purchaseHandler = () => {
-        this.setState( { purchasing: true } );
+        //id the user already logged in, then you can add any ingredients you want 
+        //if you are not logged in then you can not add ingredients it will redirect to log in page for user authentcation prupose
+        if (this.props.isAuthenticated) {
+            this.setState( { purchasing: true } );
+        }
+        else {
+            this.props.onSetAuthenticatedUserRedirectPath('/checkOut');
+            this.props.history.push("/user-authentication");
+        }
     }
 
     purchaseCancelHandler = () => {
@@ -93,6 +101,7 @@ class BurgerBuilder extends Component {
                         disabled={disabledInfo}
                         purchasable={this.updatePurchaseState(this.props.mapIng)}
                         ordered={this.purchaseHandler}
+                        isUserAuthenticated={this.props.isAuthenticated}
                         price={this.props.addPrice} />
                 </Auxiliary>
             );
@@ -121,15 +130,17 @@ const mapStateToProps = state => {
     return {
         mapIng: state.burgerBuilder.ingredients,
         addPrice: state.burgerBuilder.totalPrice,
-        error: state.burgerBuilder.error
+        error: state.burgerBuilder.error,
+        isAuthenticated: state.authReducer.token !== null
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        addTheIngredients: (nameOfIngredient) => dispatch(theBurgerBuilderActions.addIngredients (nameOfIngredient)),
-        removeTheIngredients: (nameOfIngredient) => dispatch(theBurgerBuilderActions.removeIngredients(nameOfIngredient)),
-        onInitialIngredients: () => dispatch(theBurgerBuilderActions.initialIngredients()),
-        onInitialOrder: () => dispatch(theBurgerBuilderActions.orderSummaryPage())
+        addTheIngredients: (nameOfIngredient) => dispatch(actions.addIngredients (nameOfIngredient)),
+        removeTheIngredients: (nameOfIngredient) => dispatch(actions.removeIngredients(nameOfIngredient)),
+        onInitialIngredients: () => dispatch(actions.initialIngredients()),
+        onInitialOrder: () => dispatch(actions.orderSummaryPage()),
+        onSetAuthenticatedUserRedirectPath: (path) => dispatch(actions.setAuthenticatedUserRedirectPath(path))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps) (withErrorHandler( BurgerBuilder, axios ));

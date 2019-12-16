@@ -17,7 +17,8 @@ const userAuthSuccessful = (state, action) => {
         token: action.idToken,
         userId: action.userId,
         error: null,
-        loading: false
+        loading: false,
+        authenticatedUserRedirectPath: '/'
      } );
 };
 
@@ -31,12 +32,19 @@ const userAuthFail = (state, action) => {
 const userAuthLogout = (state, action) => {
     return updateObject( state, { token: null, userId: null } );
 };
+
+const setAuthenticatedUserRedirectPath = (state, action) => {
+    return updateObject( state, { authenticatedUserRedirectPat: action.path } );
+
+    
+};
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
         case actionTypes.USER_AUTH_START: return userAuthStart(state, action);
         case actionTypes.USER_AUTH_SUCCESSFUL: return userAuthSuccessful(state, action);
         case actionTypes.USER_AUTH_FAIL: return userAuthFail(state, action);
         case actionTypes.USER_AUTH_LOGOUT: return userAuthLogout(state, action);
+        case actionTypes.SET_AUTHENTICATED_USER_REDIRECT_PATH: return setAuthenticatedUserRedirectPath(state, action);
         default:
             return state;
     }

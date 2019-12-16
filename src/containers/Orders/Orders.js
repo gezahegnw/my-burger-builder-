@@ -15,7 +15,7 @@ class Orders extends Component {
 
     componentDidMount() {
         //this data came from orderActions.js file
-        this.props.onFetchingOrders(this.props.myToken);
+        this.props.onFetchingOrders(this.props.myToken, this.props.getUserId);
         // axios.get('/orders.json')
         //     .then(res => {
         //         const fetchedOrders = [];
@@ -58,14 +58,15 @@ const mapStateToProps =  state => {
         //here yourOrder came from orderReducer.js
         newOrder: state.yourOrder.yourOrder,
         loading: state.yourOrder.loading,
-        myToken: state.authReducer.token
+        myToken: state.authReducer.token,
+        getUserId: state.authReducer.userId
     };
 };
 
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchingOrders: (token) => dispatch(actions.fetchTheOrders(token))
+        onFetchingOrders: (token, userId) => dispatch(actions.fetchTheOrders(token, userId))
     };
 };
 

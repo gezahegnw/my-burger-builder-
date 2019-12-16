@@ -56,6 +56,11 @@ class UserAuthentication extends Component {
         },
         isSignup: true
     }
+componentDidMount () {
+    if(!this.props.makingTheBurger && this.props.authenticatedUserRedirectPath !== '/') {
+        this.props.onSetAuthenticatedUserRedirectPath();
+    }
+}
 
     checkIfItsValid(value, rules)  {
         let isValid = true;
@@ -152,7 +157,7 @@ class UserAuthentication extends Component {
             //this redirect to main page after the user login
             let redirectToMainPageAfterLogin = null;
             if (this.props.isAuthenticated) {
-                redirectToMainPageAfterLogin = <Redirect to="/" />
+                redirectToMainPageAfterLogin = <Redirect to={this.props.authenticatedUserRedirectPath} />
             }
         return (
             <div className={classes.UserAuthentication}>
@@ -178,13 +183,16 @@ const mapStateToProps = state => {
     return {
         loading: state.authReducer.loading,
         error: state.authReducer.error,
-        isAuthenticated: state.authReducer.token !== null
+        isAuthenticated: state.authReducer.token !== null,
+        makingTheBurger: state.burgerBuilder.makingBurger,
+        authenticatedUserRedirectPath: state.authReducer.authenticatedUserRedirectPath
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onUserAuth: (email, password, isSignup) => dispatch(actions.userAuthentication(email, password, isSignup))
+        onUserAuth: (email, password, isSignup) => dispatch(actions.userAuthentication(email, password, isSignup)),
+        onSetAuthenticatedUserRedirectPath:  () => dispatch(actions.setAuthenticatedUserRedirectPath('/'))
     };
 };
 
