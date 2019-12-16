@@ -35,7 +35,7 @@ class BurgerBuilder extends Component {
     //use the fellowing code only if you are not using REDUX since we are using redux, we do not need to use this code here
     //instead we set up this code in burgerAction.js file by using redux-thunk
     componentDidMount () {
-        console.log(this.props);
+        //console.log(this.props);
         this.props.onInitialIngredients();
         // axios.get( 'https://my-react-burger-app-56803.firebaseio.com/ingredients.json' )
         

@@ -205,7 +205,7 @@ class ContactData extends Component {
                    changeInput={(event) => this.userInputChangeHandler (event, userInputForm.id) } />
 
                ))}
-                <Button btnType="Success" disabled={!this.state.isUserInputValid}>ORDER</Button>
+                <Button btnType="Success" disabled={!this.state.isUserInputValid}>Submit Your Order</Button>
             </form>
         );
         if ( this.props.isLoading ) {

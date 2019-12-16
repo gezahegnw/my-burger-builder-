@@ -22,12 +22,13 @@ componentDidMount () {
         <Redirect to="/" />
     </Switch>
     );
-    if (this.props. isUserAuthenticated) {
+    if (this.props.isUserAuthenticated) {
       appRoutes = (
         <Switch>
             <Route path="/checkout" component={Checkout} />
             <Route path="/orders" component={Orders} />
             <Route path="/logout" component={Logout} />
+            <Route path="/user-authentication" component={UserAuthentication} />
             <Route path="/" exact component={BurgerBuilder} />
             <Redirect to="/" />
           </Switch>

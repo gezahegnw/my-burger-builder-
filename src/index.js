@@ -12,8 +12,9 @@ import burgerBuilderReducer from './store/reducers/burgerReducer';
 import orderReducer from './store/reducers/orderReducer';
 import authReducer from './store/reducers/authReducer';
 
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// if this app is in development mode, then show redux dev tool 
+//if in production mode then do not allow reduc dev tool to use it
+const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null  || compose;
 
 const rootReducer = combineReducers({
     burgerBuilder: burgerBuilderReducer,
