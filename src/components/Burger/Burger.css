@@ -7,7 +7,18 @@
     font-weight: bold;
     font-size: 1.2rem;
 }
-
+.Para{  
+    padding:5px;  
+    margin-top:5px;  
+    margin-bottom:5px;  
+    margin-left:20px;  
+    margin-right:20px;  
+    font-size: 16px;
+    color:#7f3608;
+    }
+.H2 {
+    color:#7f3608;
+}
 @media (min-width: 500px) and (min-height: 400px) {
     .Burger {
         width: 350px;

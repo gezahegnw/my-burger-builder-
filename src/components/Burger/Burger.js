@@ -19,6 +19,11 @@ const burger = ( props ) => {
     }
     return (
         <div className={classes.Burger}>
+            <h2 className={classes.H2}>WELCOME TO DELICIOUS BURGER </h2>
+            <p className={classes.Para}>
+                You can choose any kinds of ingredients you want. Build your own burger the way you want it and ENJOY it!
+            </p>
+            <hr />
             <BurgerIngredient type="bread-top" />
             {transformedIngredients}
             <BurgerIngredient type="bread-bottom" />
