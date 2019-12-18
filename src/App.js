@@ -10,6 +10,7 @@ import Layout from './hoc/Layout/Layout';
 // import UserAuthentication from './containers/UserAuth/UserAuthentication';
 // import Logout from './containers/UserAuth/Logout/Logout';
 import * as actions from './store/actions/actionIndex';
+import Footer from './components/Footer/Footer' ;
 
 
 //this below code will situp lazy route 
@@ -59,6 +60,8 @@ componentDidMount () {
         <Layout>
           {appRoutes}
         </Layout>
+        <div><Footer /></div>
+       
       </div>
     );
   }

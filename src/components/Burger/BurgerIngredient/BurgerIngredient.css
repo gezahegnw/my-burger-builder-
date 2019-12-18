@@ -1,5 +1,5 @@
 .BreadBottom {
-    height: 13%;
+    height: 10%;
     width: 80%;
     background: linear-gradient(#F08E4A, #e27b36);
     border-radius: 0 0 30px 30px;
@@ -8,7 +8,7 @@
 }
 
 .BreadTop {
-    height: 20%;
+    height: 10%;
     width: 80%;
     background: linear-gradient(#bc581e, #e27b36);
     border-radius: 50% 50% 0 0;
@@ -18,8 +18,8 @@
 }
 
 .Seeds1 {
-    width: 10%;
-    height: 15%;
+    width: 5%;
+    height: 8%;
     position: absolute;
     background-color: white;
     left: 30%;
@@ -56,8 +56,8 @@
   }
 
   .Seeds2 {
-    width: 10%;
-    height: 15%;
+    width: 5%;
+    height: 8%;
     position: absolute;
     background-color: white;
     left: 64%;
@@ -96,6 +96,13 @@
     background: linear-gradient(#f4d004, #d6bb22);
     border-radius: 20px;
 }
+.Sauce {
+  width: 90%;
+  height: 4.5%;
+  margin: 2% auto;
+  background: linear-gradient(#e00f0f, #c7212e);
+  border-radius: 20px;
+}
 
 .Salad {
     width: 85%;
@@ -110,4 +117,37 @@
     height: 3%;
     background: linear-gradient(#bf3813, #c45e38);
     margin: 2% auto;
+}
+.Chicken {
+  background: linear-gradient(rgb(230, 161, 112), #b38d75);
+  width: 80%;
+  height: 8%;
+  margin: 2% auto;
+  border-radius: 15px;
+}
+
+
+
+/* for hover effect */
+.BreadBottom:hover {
+	margin-top: 100px;
+}
+.BreadTop:hover {
+	margin-bottom: 40px;
+}
+
+.Bacon:hover {
+	margin-bottom: 40px;
+}
+.Cheese:hover {
+	margin-bottom: 60px;
+}
+.Salad:hover {
+	margin-bottom: 60px;
+}
+.Meat:hover {
+	margin-bottom: 60px;
+}
+.Sauce:hover {
+	margin-bottom: 60px;
 }

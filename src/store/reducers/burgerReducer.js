@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
         ingredients: null,
-        totalPrice: 2,
+        totalPrice: 1,
         error: false,
         makingBurger: false
 };
@@ -10,7 +10,9 @@ const INGREDIENT_PRICES = {
     salad: 0.5,
     cheese: 0.4,
     meat: 0.5,
-    bacon: 0.3
+    bacon: 0.3,
+    sauce: 0.20,
+    chicken: 0.7
 };
 
 const reducer = (state = initialState, action) => {
@@ -42,7 +44,7 @@ const reducer = (state = initialState, action) => {
                     ...state,
                     ingredients: action.myIngredients,
                     //this totalPrice 2 will reset the total price after you submitted your order
-                    totalPrice: 2,
+                    totalPrice: 1,
                     error: false,
                     makingBurger: false
                 };

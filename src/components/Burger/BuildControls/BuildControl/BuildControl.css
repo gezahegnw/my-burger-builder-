@@ -47,11 +47,17 @@
 }
 
 .BuildControl .Less:hover, .BuildControl .Less:active {  
-    background-color: #DAA972;
+    background-color: rgb(230, 171, 193);
     color: white;
+    font-size: 24px;
+    width: 100px;
+    border-radius: 10px;
 }
 
 .BuildControl .More:hover,.BuildControl .More:active {
-    background-color: #99703F;
+    background-color: rgb(113, 166, 226);
     color: white;
+    font-size: 24px;
+    width: 100px;
+    border-radius: 10px;
 }
